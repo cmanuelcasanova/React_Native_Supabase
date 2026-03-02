@@ -1,14 +1,43 @@
 import { StyleSheet } from 'react-native';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
+import { useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase';
 
 export default function TabOneScreen() {
+
+
+  const [datos, setDatos] = useState<string>()
+  const getTask = async () => {
+
+     const { data, error } = await supabase
+    .from('Task') 
+    .select('*');        
+
+  if (error) {
+    console.error('Error fetching instruments:', error.message);
+    return;
+  }
+  console.log('Task:', data);
+  if(data.length>0) {setDatos(data[0].Title)}
+  }
+
+
+
+  useEffect(   ()=>{
+
+    getTask()
+
+
+  },[]   )
+ 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <Text style={styles.title}>Home Page</Text>
+    
+      {datos && 
+      <Text style={styles.title}>{datos}</Text>
+      }
     </View>
   );
 }
