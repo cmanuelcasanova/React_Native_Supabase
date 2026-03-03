@@ -4,7 +4,7 @@ import { Text, View } from '@/components/Themed';
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 
-export default function TabOneScreen() {
+export default function HomeScreen() {
 
 
   const [datos, setDatos] = useState<string>()

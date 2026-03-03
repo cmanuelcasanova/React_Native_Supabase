@@ -29,7 +29,7 @@ export default function TabLayout() {
         headerShown: useClientOnlyValue(false, true),
       }}>
       <Tabs.Screen
-        name="index"
+        name="HomeScreen"
         options={{
           title: 'Home',
           headerShown: false,
@@ -51,7 +51,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="UserScreen"
         options={{
           title: 'Login',
           tabBarIcon: ({ color }) => <FontAwesome name="user-circle" size={24} color={color} />,
