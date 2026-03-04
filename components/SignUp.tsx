@@ -1,72 +1,231 @@
 import { Text, TextInput, View, useThemeColor } from "@/components/Themed";
+import { supabase } from "@/src/lib/supabase";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useState } from "react";
-import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import {
+  Keyboard,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
+type Inputs = {
+  name: string;
+  email: string;
+  password: string;
+  repassword: string;
+};
 
 export default function SignUp() {
   const [viewPassword, setViewPassword] = useState<boolean>(true);
   const TextoTheme = useThemeColor({}, "tabIconDefault");
 
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      repassword: "",
+    },
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = async (dataForm) => {
+    console.log(dataForm);
+
+    const { data, error } = await supabase.auth.signUp({
+      email: dataForm.email,
+      password: dataForm.password,
+      options: {
+        data: {
+          name: dataForm.name,
+        },
+      },
+    });
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={{ marginBottom: 30 }}> Registro de Usuario </Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <Text style={{ marginBottom: 30 }}> Registro de Usuario </Text>
 
-      <TextInput
-        style={{ marginBottom: 20 }}
-        secureTextEntry={viewPassword}
-        placeholder="Nombre de Usuario"
-      />
-      <TextInput style={{ marginBottom: 20 }} placeholder="Ingrese Email" />
-
-      <View style={styles.PasswordContainer}>
-        <TextInput
-          secureTextEntry={viewPassword}
-          placeholder="Ingrese Password"
-        />
-
-        <Pressable
-          onPressIn={() => setViewPassword(false)}
-          onPressOut={() => setViewPassword(true)}
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          enableOnAndroid={true}
+          extraScrollHeight={20} // Margen extra sobre el input
         >
-          <FontAwesome5 name="eye" size={24} color={TextoTheme} />
-        </Pressable>
+          <Controller
+            control={control}
+            name="name"
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={styles.textInput}
+                placeholder="Nombre de Usuario"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+          {errors.name && (
+            <Text style={{ color: "red" }}>This is required.</Text>
+          )}
+
+          <Controller
+            control={control}
+            name="email"
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                style={styles.textInput}
+                placeholder="Ingrese Email"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+          {errors.email && (
+            <Text style={{ color: "red" }}>This is required.</Text>
+          )}
+
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: TextoTheme,
+              flexDirection: "row",
+              flexWrap: "wrap",
+              gap: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: 20,
+              borderRadius: 10,
+            }}
+          >
+            <Controller
+              control={control}
+              name="password"
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={{ borderColor: "transparent" }}
+                  secureTextEntry={viewPassword}
+                  placeholder="Ingrese Password"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+            />
+
+            <Pressable
+              style={{ padding: 10 }}
+              onPressIn={() => setViewPassword(false)}
+              onPressOut={() => setViewPassword(true)}
+            >
+              <FontAwesome5 name="eye" size={24} color={TextoTheme} />
+            </Pressable>
+          </View>
+          {errors.password && (
+            <Text style={{ color: "red" }}>This is required.</Text>
+          )}
+
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: TextoTheme,
+              flexDirection: "row",
+              flexWrap: "wrap",
+              gap: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: 20,
+              borderRadius: 10,
+            }}
+          >
+            <Controller
+              control={control}
+              name="repassword"
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={{ borderColor: "transparent" }}
+                  secureTextEntry={viewPassword}
+                  placeholder="Repita Password"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+            />
+
+            <Pressable
+              style={{ padding: 10 }}
+              onPressIn={() => setViewPassword(false)}
+              onPressOut={() => setViewPassword(true)}
+            >
+              <FontAwesome5 name="eye" size={24} color={TextoTheme} />
+            </Pressable>
+          </View>
+          {errors.repassword && (
+            <Text style={{ color: "red" }}>This is required.</Text>
+          )}
+
+          <TouchableOpacity
+            style={styles.ButonOpacity}
+            onPress={handleSubmit(onSubmit)}
+          >
+            <Text>Aceptar </Text>
+          </TouchableOpacity>
+        </KeyboardAwareScrollView>
       </View>
-
-      <View style={styles.PasswordContainer}>
-        <TextInput
-          secureTextEntry={viewPassword}
-          placeholder="Repita Password"
-        />
-
-        <Pressable
-          onPressIn={() => setViewPassword(false)}
-          onPressOut={() => setViewPassword(true)}
-        >
-          <FontAwesome5 name="eye" size={24} color={TextoTheme} />
-        </Pressable>
-      </View>
-
-      <TouchableOpacity style={styles.ButonOpacity}>
-        <Text> Aceptar</Text>
-      </TouchableOpacity>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 0.7,
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  textInput: {
+    marginBottom: 20,
+    width: 260,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  formStyle: {
+    marginLeft: 50,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+    width: 300,
   },
   ButonOpacity: {
     backgroundColor: "blue",
     borderRadius: 10,
     padding: 7,
     textAlign: "center",
+    width: "30%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: "auto",
   },
 
   PasswordContainer: {
+    borderWidth: 1,
+
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,

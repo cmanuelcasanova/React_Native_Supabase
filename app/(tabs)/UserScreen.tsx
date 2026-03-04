@@ -1,11 +1,16 @@
 import SignIn from "@/components/SignIn";
+import SignOut from "@/components/SignOut";
 import SignUp from "@/components/SignUp";
 import { Text, View } from "@/components/Themed";
+import { useAuthStore } from "@/src/store/useAuthStore";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
 
 export default function UserScreen() {
+  const user = useAuthStore((store) => store.user);
   const [userMode, setUserMode] = useState<string>("SignIn");
+
+  if (user) return <SignOut />;
 
   return (
     <View style={styles.container}>
@@ -25,7 +30,7 @@ export default function UserScreen() {
       ) : (
         <>
           <SignUp />
-          <Text>
+          <Text style={{ marginTop: 30 }}>
             Si tienes cuenta{" "}
             <Text
               onPress={() => setUserMode("SignIn")}
