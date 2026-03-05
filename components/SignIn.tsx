@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 40,
+    backgroundColor: "00000000",
   },
   textInput: {},
 

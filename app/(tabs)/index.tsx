@@ -1,30 +1,23 @@
+import AddTask from "@/components/AddTask";
+import BackgroundTheme from "@/components/BackgroundTheme";
 import { Text, View } from "@/components/Themed";
-import { supabase } from "@/src/lib/supabase";
+import { useTask } from "@/src/hooks/useTask";
 import { useAuthStore } from "@/src/store/useAuthStore";
 import { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { ActivityIndicator, StyleSheet } from "react-native";
 
 export default function index() {
   const [datos, setDatos] = useState<string>();
   const user = useAuthStore((store) => store.user);
+  const { data: Produts, refetch, isFetching, isLoading } = useTask();
 
   useEffect(() => {
-    const getTask = async () => {
-      const { data, error } = await supabase.from("Task").select("*");
+    if (Produts) {
+      setDatos(Produts[0].Title);
+    }
+  }, [Produts]);
 
-      if (error) {
-        console.error("Error fetching instruments:", error.message);
-        return;
-      }
-      console.log("Task:", data);
-      if (data.length > 0) {
-        setDatos(data[0].Title);
-      }
-    };
-
-    getTask();
-  }, [user]);
-
+  /*
   useEffect(() => {
     const GetSeccion = async () => {
       const { data, error } = await supabase.auth.getSession();
@@ -33,18 +26,24 @@ export default function index() {
         console.error("No hay seccion", error.message);
         return;
       }
-      console.log(data);
     };
 
     GetSeccion();
-  }, []);
+  }, []);*/
 
+  {
+    isLoading && <ActivityIndicator />;
+  }
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Home Page</Text>
+    <BackgroundTheme>
+      <View style={styles.container}>
+        <Text style={styles.title}>Home Page</Text>
 
-      {datos && <Text style={styles.title}>{datos}</Text>}
-    </View>
+        {datos && <Text style={styles.title}>{datos}</Text>}
+
+        <AddTask />
+      </View>
+    </BackgroundTheme>
   );
 }
 
@@ -53,10 +52,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "00000000",
+  },
+  linearGradient: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 5,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
+    backgroundColor: "transparent",
   },
   separator: {
     marginVertical: 30,

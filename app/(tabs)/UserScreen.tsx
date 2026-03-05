@@ -1,3 +1,4 @@
+import BackgroundTheme from "@/components/BackgroundTheme";
 import SignIn from "@/components/SignIn";
 import SignOut from "@/components/SignOut";
 import SignUp from "@/components/SignUp";
@@ -13,35 +14,37 @@ export default function UserScreen() {
   if (user) return <SignOut />;
 
   return (
-    <View style={styles.container}>
-      {userMode === "SignIn" ? (
-        <>
-          <SignIn />
-          <Text>
-            Si no tienes cuenta Registrate{" "}
-            <Text
-              onPress={() => setUserMode("SignUp")}
-              style={{ color: "blue", fontWeight: "bold" }}
-            >
-              Aqui
+    <BackgroundTheme>
+      <View style={styles.container}>
+        {userMode === "SignIn" ? (
+          <>
+            <SignIn />
+            <Text>
+              Si no tienes cuenta Registrate{" "}
+              <Text
+                onPress={() => setUserMode("SignUp")}
+                style={{ color: "blue", fontWeight: "bold" }}
+              >
+                Aqui
+              </Text>
             </Text>
-          </Text>
-        </>
-      ) : (
-        <>
-          <SignUp />
-          <Text style={{ marginTop: 30 }}>
-            Si tienes cuenta{" "}
-            <Text
-              onPress={() => setUserMode("SignIn")}
-              style={{ color: "blue", fontWeight: "bold" }}
-            >
-              Inicia Session
+          </>
+        ) : (
+          <>
+            <SignUp />
+            <Text style={{ marginTop: 30 }}>
+              Si tienes cuenta{" "}
+              <Text
+                onPress={() => setUserMode("SignIn")}
+                style={{ color: "blue", fontWeight: "bold" }}
+              >
+                Inicia Session
+              </Text>
             </Text>
-          </Text>
-        </>
-      )}
-    </View>
+          </>
+        )}
+      </View>
+    </BackgroundTheme>
   );
 }
 
@@ -50,6 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "00000000",
   },
   title: {
     fontSize: 20,

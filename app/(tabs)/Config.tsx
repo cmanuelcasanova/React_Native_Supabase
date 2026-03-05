@@ -1,25 +1,16 @@
+import BackgroundTheme from "@/components/BackgroundTheme";
 import { Text, View } from "@/components/Themed";
-import { supabase } from "@/src/lib/supabase";
-import { StyleSheet, TouchableOpacity } from "react-native";
-
-const LogOut = async () => {
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-    console.error("Error fetching instruments:", error.message);
-    return;
-  }
-};
+import { StyleSheet } from "react-native";
 
 export default function Config() {
   return (
-    <View style={styles.container}>
-      <View>
-        <TouchableOpacity style={styles.ButonOpacity} onPress={LogOut}>
-          <Text> Cerrar Session</Text>
-        </TouchableOpacity>
+    <BackgroundTheme>
+      <View style={styles.container}>
+        <View>
+          <Text> Aplication Settings </Text>
+        </View>
       </View>
-    </View>
+    </BackgroundTheme>
   );
 }
 
@@ -28,6 +19,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "00000000",
   },
 
   ButonOpacity: {

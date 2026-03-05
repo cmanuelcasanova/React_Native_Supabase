@@ -1,32 +1,41 @@
 import { Text, View } from "@/components/Themed";
 import { supabase } from "@/src/lib/supabase";
 import { useAuthStore } from "@/src/store/useAuthStore";
-import { StyleSheet, TouchableOpacity } from "react-native";
-
-const LogOut = async () => {
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-    console.error("Error fetching instruments:", error.message);
-    return;
-  }
-};
+import { useState } from "react";
+import { ActivityIndicator, StyleSheet, TouchableOpacity } from "react-native";
+import BackgroundTheme from "./BackgroundTheme";
 
 export default function SignOut() {
   const user = useAuthStore((store) => store.user);
 
+  const [isLoading, setIsloading] = useState<boolean>(false);
+  const LogOut = async () => {
+    setIsloading(true);
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      console.error(error.message);
+      return;
+    }
+    setIsloading(false);
+  };
+
+  if (isLoading) return <ActivityIndicator />;
+
   return (
-    <View style={styles.container}>
-      <Text>Sesión iniciada como:</Text>
-      <Text style={{ fontWeight: "bold", marginBottom: 20 }}>
-        {user?.user_metadata.name}
-      </Text>
-      <View>
-        <TouchableOpacity style={styles.ButonOpacity} onPress={LogOut}>
-          <Text> Cerrar Session</Text>
-        </TouchableOpacity>
+    <BackgroundTheme>
+      <View style={styles.container}>
+        <Text>Sesión iniciada como:</Text>
+        <Text style={{ fontWeight: "bold", marginBottom: 20 }}>
+          {user?.user_metadata.name}
+        </Text>
+        <View style={{ backgroundColor: "transparent" }}>
+          <TouchableOpacity style={styles.ButonOpacity} onPress={LogOut}>
+            <Text> Cerrar Session</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </BackgroundTheme>
   );
 }
 
@@ -35,6 +44,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "00000000",
   },
 
   ButonOpacity: {
