@@ -13,17 +13,17 @@ export const useTask = () => {
 };
 
 export const useCreateTask = () => {
-  const user = useAuthStore((state) => state.user?.id);
+  const userId = useAuthStore((state) => state.user?.id);
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (Title: string) => {
-      if (!user) throw new Error("No hay usuario autenticado");
-      return createTask(Title, user);
+      if (!userId) throw new Error("No hay usuario autenticado");
+      return createTask(Title, userId);
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products", user] });
+      queryClient.invalidateQueries({ queryKey: ["products", userId] });
     },
 
     onError: (error) => {

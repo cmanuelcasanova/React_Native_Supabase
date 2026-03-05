@@ -12,6 +12,7 @@ export default function AddTask() {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Add>({
     defaultValues: {
@@ -26,6 +27,7 @@ export default function AddTask() {
     mutate(dataForm.task, {
       onSuccess: () => {
         alert("¡Tarea guardada!");
+        reset({ task: "" });
       },
     });
   };

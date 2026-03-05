@@ -9,13 +9,13 @@ import { ActivityIndicator, StyleSheet } from "react-native";
 export default function index() {
   const [datos, setDatos] = useState<string>();
   const user = useAuthStore((store) => store.user);
-  const { data: Produts, refetch, isFetching, isLoading } = useTask();
+  const { data: Products, refetch, isFetching, isLoading } = useTask();
 
   useEffect(() => {
-    if (Produts) {
-      setDatos(Produts[0].Title);
+    if (Products) {
+      setDatos(Products[0].Title);
     }
-  }, [Produts]);
+  }, [Products]);
 
   /*
   useEffect(() => {
@@ -31,20 +31,28 @@ export default function index() {
     GetSeccion();
   }, []);*/
 
-  {
-    isLoading && <ActivityIndicator />;
-  }
-  return (
-    <BackgroundTheme>
-      <View style={styles.container}>
-        <Text style={styles.title}>Home Page</Text>
+  console.log("--- RENDER ---");
+  console.log("isLoading:", isLoading);
+  console.log("isFetching:", isFetching);
+  console.log("Cantidad de productos:", Products?.length);
 
-        {datos && <Text style={styles.title}>{datos}</Text>}
+  if (isLoading) return <ActivityIndicator />;
+  if (Products && Products.length > 0)
+    return (
+      <BackgroundTheme>
+        <View style={styles.container}>
+          <Text style={styles.title}>Home Page</Text>
 
-        <AddTask />
-      </View>
-    </BackgroundTheme>
-  );
+          {Products.map((item, index) => (
+            <Text key={index} style={styles.title}>
+              {item.Title}
+            </Text>
+          ))}
+
+          <AddTask />
+        </View>
+      </BackgroundTheme>
+    );
 }
 
 const styles = StyleSheet.create({
