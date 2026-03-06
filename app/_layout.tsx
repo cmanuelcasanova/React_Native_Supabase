@@ -14,6 +14,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
 import "react-native-reanimated";
+import ToastManager from "toastify-react-native";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -104,6 +105,7 @@ function RootLayoutNav() {
           <Stack.Screen name="modal" options={{ presentation: "modal" }} />
         </Stack>
       </ThemeProvider>
+      <ToastManager />
     </QueryClientProvider>
   );
 }

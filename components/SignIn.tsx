@@ -8,10 +8,9 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
   ActivityIndicator,
   Keyboard,
+  Platform,
   Pressable,
   StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -52,18 +51,26 @@ export default function SignIn() {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <Pressable onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         {isloading ? (
           <ActivityIndicator />
         ) : (
-          <View style={{ alignItems: "center", justifyContent: "center" }}>
+          <View
+            style={{
+              borderRadius: 20,
+              padding: 20,
+              alignItems: "center",
+            }}
+          >
             <Text> Login </Text>
 
             <KeyboardAwareScrollView
-              contentContainerStyle={{ flexGrow: 1 }}
+              contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 20 }}
               enableOnAndroid={true}
-              extraScrollHeight={20} // Margen extra sobre el input
+              extraScrollHeight={Platform.OS === "ios" ? 0 : 20}
+              enableAutomaticScroll={true}
+              keyboardShouldPersistTaps="handled"
             >
               <Controller
                 control={control}
@@ -90,7 +97,7 @@ export default function SignIn() {
                   flexDirection: "row",
                   flexWrap: "wrap",
                   gap: 10,
-                  justifyContent: "center",
+
                   alignItems: "center",
                   marginBottom: 20,
                   borderRadius: 10,
@@ -124,24 +131,24 @@ export default function SignIn() {
                 <Text style={{ color: "red" }}>This is required.</Text>
               )}
 
-              <TouchableOpacity
+              <Pressable
                 style={styles.ButonOpacity}
                 onPress={handleSubmit(onSubmit)}
               >
-                <Text> Aceptar</Text>
-              </TouchableOpacity>
+                <Text style={{ marginHorizontal: "auto" }}> Aceptar</Text>
+              </Pressable>
             </KeyboardAwareScrollView>
           </View>
         )}
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 0.7,
-    alignItems: "center",
+
     justifyContent: "center",
     marginBottom: 40,
     backgroundColor: "00000000",

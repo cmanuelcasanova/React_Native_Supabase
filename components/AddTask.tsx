@@ -1,7 +1,8 @@
 import { useCreateTask } from "@/src/hooks/useTask";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
+import { Toast } from "toastify-react-native";
 import { Text, TextInput, View } from "./Themed";
 
 type Add = {
@@ -23,10 +24,9 @@ export default function AddTask() {
   const { mutate, isPending } = useCreateTask();
 
   const onSubmit: SubmitHandler<Add> = async (dataForm) => {
-    console.log(dataForm);
     mutate(dataForm.task, {
       onSuccess: () => {
-        alert("¡Tarea guardada!");
+        Toast.success("Success message!");
         reset({ task: "" });
       },
     });
@@ -50,9 +50,9 @@ export default function AddTask() {
       />
       {errors.task && <Text style={{ color: "red" }}>This is required.</Text>}
 
-      <TouchableOpacity onPress={handleSubmit(onSubmit)}>
+      <Pressable onPress={handleSubmit(onSubmit)}>
         <Ionicons name="add-circle-outline" size={24} color="black" />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

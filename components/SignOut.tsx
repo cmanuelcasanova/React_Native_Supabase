@@ -1,12 +1,15 @@
 import { Text, View } from "@/components/Themed";
 import { supabase } from "@/src/lib/supabase";
 import { useAuthStore } from "@/src/store/useAuthStore";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { ActivityIndicator, StyleSheet, TouchableOpacity } from "react-native";
+import { Toast } from "toastify-react-native";
 import BackgroundTheme from "./BackgroundTheme";
 
 export default function SignOut() {
-  const user = useAuthStore((store) => store.user);
+  const { signOut, user } = useAuthStore((store) => store);
+  const queryClient = useQueryClient();
 
   const [isLoading, setIsloading] = useState<boolean>(false);
   const LogOut = async () => {
@@ -17,6 +20,9 @@ export default function SignOut() {
       console.error(error.message);
       return;
     }
+    Toast.success("Seccion Cerrada con Exito");
+    signOut();
+    queryClient.clear;
     setIsloading(false);
   };
 

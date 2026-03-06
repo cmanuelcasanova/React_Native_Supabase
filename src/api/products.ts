@@ -1,6 +1,16 @@
-import { supabase } from "@/src/lib/supabase";
+interface ResponseSupabase {
+  id: number;
+  Title: string;
+  user_id: string;
+  created_at: Timestamp;
+}
 
-export const fetchTask = async (userId: string) => {
+import { supabase } from "@/src/lib/supabase";
+import { Timestamp } from "react-native-reanimated/lib/typescript/commonTypes";
+
+export const fetchTask = async (
+  userId: string,
+): Promise<ResponseSupabase[]> => {
   const { data, error } = await supabase
     .from("Task")
     .select("*")

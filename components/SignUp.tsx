@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
   Keyboard,
+  Platform,
   Pressable,
   StyleSheet,
   TouchableOpacity,
@@ -51,14 +52,16 @@ export default function SignUp() {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
         <Text style={{ marginBottom: 30 }}> Registro de Usuario </Text>
 
         <KeyboardAwareScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           enableOnAndroid={true}
-          extraScrollHeight={20} // Margen extra sobre el input
+          extraScrollHeight={Platform.OS === "ios" ? 0 : 20}
+          enableAutomaticScroll={true}
+          keyboardShouldPersistTaps="handled"
         >
           <Controller
             control={control}
@@ -192,9 +195,8 @@ export default function SignUp() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.7,
+    flex: 0.8,
     alignItems: "center",
-    justifyContent: "center",
   },
 
   textInput: {
