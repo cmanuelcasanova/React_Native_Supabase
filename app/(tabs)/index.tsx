@@ -1,8 +1,13 @@
 import TaskContainer from "@/components/TaskContainer";
-import { StyleSheet } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
 
 export default function index() {
-  return <TaskContainer />;
+  return (
+    <>
+      <StatusBar barStyle="light-content" backgroundColor="#05163b" />
+      <TaskContainer />
+    </>
+  );
 }
 
 const styles = StyleSheet.create({

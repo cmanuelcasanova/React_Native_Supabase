@@ -1,16 +1,7 @@
-interface ResponseSupabase {
-  id: number;
-  Title: string;
-  user_id: string;
-  created_at: Timestamp;
-}
-
 import { supabase } from "@/src/lib/supabase";
-import { Timestamp } from "react-native-reanimated/lib/typescript/commonTypes";
+import { Products } from "./typeSupabase";
 
-export const fetchTask = async (
-  userId: string,
-): Promise<ResponseSupabase[]> => {
+export const fetchTask = async (userId: string): Promise<Products[]> => {
   const { data, error } = await supabase
     .from("Task")
     .select("*")
@@ -30,6 +21,16 @@ export const createTask = async (taskName: string, userId: string) => {
     ])
     .select()
     .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const deleteTask = async (task_id: number) => {
+  const { data, error } = await supabase
+    .from("Task")
+    .delete()
+    .eq("id", task_id);
 
   if (error) throw error;
   return data;

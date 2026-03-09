@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createTask, fetchTask } from "../api/products";
+import { createTask, deleteTask, fetchTask } from "../api/products";
 import { useAuthStore } from "../store/useAuthStore";
 
 export const useTask = () => {
@@ -28,6 +28,26 @@ export const useCreateTask = () => {
 
     onError: (error) => {
       console.error("Error al crear tarea:", error.message);
+    },
+  });
+};
+
+export const useDeleteTask = () => {
+  const userId = useAuthStore((state) => state.user?.id);
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (task_id: number) => {
+      if (!userId) throw new Error("No hay usuario autenticado");
+      return deleteTask(task_id);
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products", userId] });
+    },
+
+    onError: (error) => {
+      console.error("Error al Borrar tarea:", error.message);
     },
   });
 };

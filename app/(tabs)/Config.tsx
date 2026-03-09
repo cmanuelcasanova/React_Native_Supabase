@@ -1,13 +1,12 @@
 import BackgroundTheme from "@/components/BackgroundTheme";
-import { Text, View } from "@/components/Themed";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function Config() {
   return (
     <BackgroundTheme>
       <View style={styles.container}>
-        <View>
-          <Text> Aplication Settings </Text>
+        <View className="p-20 bg-red-600 rounded-2xl">
+          <Text className="text-white"> Aplication Settings </Text>
         </View>
       </View>
     </BackgroundTheme>

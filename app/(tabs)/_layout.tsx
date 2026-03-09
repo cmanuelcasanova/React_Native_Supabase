@@ -4,6 +4,7 @@ import Colors from "@/constants/Colors";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Link, Tabs } from "expo-router";
 import React from "react";
 import { Pressable } from "react-native";
@@ -62,6 +63,18 @@ export default function TabLayout() {
           title: "Login",
           tabBarIcon: ({ color }) => (
             <FontAwesome name="user-circle" size={24} color={color} />
+          ),
+          headerRight: () => (
+            <Pressable onPress={() => console.log("asdsd")}>
+              {({ pressed }) => (
+                <MaterialIcons
+                  name="logout"
+                  size={25}
+                  color={Colors[colorScheme ?? "light"].text}
+                  style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                />
+              )}
+            </Pressable>
           ),
         }}
       />

@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
 import "react-native-reanimated";
 import ToastManager from "toastify-react-native";
+import "../global.css";
 
 export {
   // Catch any errors thrown by the Layout component.
