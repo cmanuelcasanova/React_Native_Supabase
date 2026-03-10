@@ -1,3 +1,4 @@
+import Modalconfirmation from "@/components/Modal/modalconfirmation";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { useColorScheme } from "@/components/useColorScheme";
 import Colors from "@/constants/Colors";
@@ -6,7 +7,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Link, Tabs } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { Pressable } from "react-native";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -19,75 +20,88 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const [viewModal, setViewModal] = useState<boolean>(false);
+
+  const closeModal = () => {
+    setViewModal(false);
+  };
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Home",
-          headerShown: false,
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="home-outline"
-              size={24}
-              color={color}
-            />
-          ),
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
+    <>
+      {viewModal && (
+        <Modalconfirmation
+          isVisible={viewModal}
+          closeModal={() => closeModal()}
+        />
+      )}
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+          // Disable the static render of the header on web
+          // to prevent a hydration error in React Navigation v6.
+          headerShown: useClientOnlyValue(false, true),
+        }}
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: "Home",
+            headerShown: false,
+            tabBarIcon: ({ color }) => (
+              <MaterialCommunityIcons
+                name="home-outline"
+                size={24}
+                color={color}
+              />
+            ),
+            headerRight: () => (
+              <Link href="/modal" asChild>
+                <Pressable>
+                  {({ pressed }) => (
+                    <FontAwesome
+                      name="info-circle"
+                      size={25}
+                      color={Colors[colorScheme ?? "light"].text}
+                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    />
+                  )}
+                </Pressable>
+              </Link>
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="UserScreen"
+          options={{
+            title: "Login",
+            tabBarIcon: ({ color }) => (
+              <FontAwesome name="user-circle" size={24} color={color} />
+            ),
+            headerRight: () => (
+              <Pressable onPress={() => setViewModal(true)}>
                 {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
+                  <MaterialIcons
+                    name="logout"
                     size={25}
                     color={Colors[colorScheme ?? "light"].text}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                   />
                 )}
               </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="UserScreen"
-        options={{
-          title: "Login",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="user-circle" size={24} color={color} />
-          ),
-          headerRight: () => (
-            <Pressable onPress={() => console.log("asdsd")}>
-              {({ pressed }) => (
-                <MaterialIcons
-                  name="logout"
-                  size={25}
-                  color={Colors[colorScheme ?? "light"].text}
-                  style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                />
-              )}
-            </Pressable>
-          ),
-        }}
-      />
+            ),
+          }}
+        />
 
-      <Tabs.Screen
-        name="Config"
-        options={{
-          title: "Config",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="settings-outline" size={24} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+        <Tabs.Screen
+          name="Config"
+          options={{
+            title: "Config",
+            tabBarIcon: ({ color }) => (
+              <Ionicons name="settings-outline" size={24} color={color} />
+            ),
+          }}
+        />
+      </Tabs>
+    </>
   );
 }

@@ -4,7 +4,7 @@
     "slug": "MyAppSupabase",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/old_logo.png",
     "scheme": "myappsupabase",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -18,7 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/old_logo-removebg-preview.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,

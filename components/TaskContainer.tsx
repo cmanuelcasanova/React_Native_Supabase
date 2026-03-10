@@ -28,14 +28,14 @@ export default function TaskContainer() {
           <AddTask />
           <FlatList<Products>
             contentContainerClassName="items-center flex-grow w-full py-4"
-            data={[...(Products || [])]}
+            data={Products || []}
             onRefresh={refetch}
             refreshing={isFetching}
             className="flex-1 w-full"
             ItemSeparatorComponent={() => <View className="h-4" />}
             renderItem={Cardhandle}
             keyExtractor={(item) => item.id.toString()}
-            extraData={[isFetching, isPending, Products?.length]}
+            extraData={[Products]}
           />
         </View>
       </SafeAreaView>

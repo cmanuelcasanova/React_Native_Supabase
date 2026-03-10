@@ -17,9 +17,9 @@ export const useCreateTask = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (Title: string) => {
+    mutationFn: async (Title: string) => {
       if (!userId) throw new Error("No hay usuario autenticado");
-      return createTask(Title, userId);
+      return await createTask(Title, userId);
     },
 
     onSuccess: () => {
@@ -37,9 +37,9 @@ export const useDeleteTask = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (task_id: number) => {
+    mutationFn: async (task_id: number) => {
       if (!userId) throw new Error("No hay usuario autenticado");
-      return deleteTask(task_id);
+      return await deleteTask(task_id);
     },
 
     onSuccess: () => {
