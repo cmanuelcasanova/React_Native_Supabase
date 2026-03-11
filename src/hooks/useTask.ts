@@ -4,10 +4,10 @@ import { useAuthStore } from "../store/useAuthStore";
 
 export const useTask = () => {
   const userId = useAuthStore((store) => store.user?.id);
+
   return useQuery({
     queryKey: ["products", userId],
     queryFn: () => fetchTask(userId!),
-    staleTime: 1000 * 60 * 5,
     enabled: !!userId,
   });
 };
@@ -22,8 +22,15 @@ export const useCreateTask = () => {
       return await createTask(Title, userId);
     },
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products", userId] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["products", userId],
+        exact: true,
+      });
+
+      /*await queryClient.refetchQueries({
+        queryKey: ["products", userId],
+      });*/
     },
 
     onError: (error) => {
@@ -42,8 +49,11 @@ export const useDeleteTask = () => {
       return await deleteTask(task_id);
     },
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products", userId] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["products", userId],
+        exact: true,
+      });
     },
 
     onError: (error) => {

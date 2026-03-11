@@ -2,12 +2,11 @@ import { Products } from "@/src/api/typeSupabase";
 import { useTask } from "@/src/hooks/useTask";
 import { useAuthStore } from "@/src/store/useAuthStore";
 import { useCallback } from "react";
-import { ActivityIndicator, FlatList, StyleSheet } from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddTask from "./AddTask";
 import BackgroundTheme from "./BackgroundTheme";
 import Card from "./Card";
-import { Text, View } from "./Themed";
 
 export default function TaskContainer() {
   const user = useAuthStore((store) => store.user);
@@ -31,7 +30,7 @@ export default function TaskContainer() {
             data={Products || []}
             onRefresh={refetch}
             refreshing={isFetching}
-            className="flex-1 w-full"
+            className="flex-1 w-full bg"
             ItemSeparatorComponent={() => <View className="h-4" />}
             renderItem={Cardhandle}
             keyExtractor={(item) => item.id.toString()}

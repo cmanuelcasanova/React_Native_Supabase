@@ -1,9 +1,8 @@
 import { useCreateTask } from "@/src/hooks/useTask";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { Toast } from "toastify-react-native";
-import { Text, TextInput, View } from "./Themed";
 
 type Add = {
   task: string;
